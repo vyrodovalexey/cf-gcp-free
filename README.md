@@ -1,10 +1,22 @@
-## CloudFoundry deployment on GCP free
+## CloudFoundry deployment on GCP free trial
 
 
 
 ### Usage
 
-1. Login to CF
+1. Singup on Google GCP
+
+2. Install Cloud SDK
+https://cloud.google.com/sdk/downloads
+
+3. Create IAM service account
+```gcloud iam service-accounts create bbl-user --display-name "BBL"
+```
+4. Create service keys
+```gcloud iam service-accounts keys create --iam-account='bbl-user@upbeat-cosine-188006.iam.gserviceaccount.com' \
+bbl-user.key.json
+```
+
 
   ```bash
   cf login -a https://api.run.pivotal.io
