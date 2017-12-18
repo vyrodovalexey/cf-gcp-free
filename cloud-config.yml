@@ -1,0 +1,163 @@
+azs:
+- name: z1
+  cloud_properties:
+    zone: us-central1-a
+- name: z2
+  cloud_properties:
+    zone: southamerica-east1-a
+- name: z3
+  cloud_properties:
+    zone: asia-southeast1-a
+- name: z4
+  cloud_properties:
+    zone: australia-southeast1-a
+vm_types:
+- name: common
+  cloud_properties:
+    machine_type: n1-standard-1
+    root_disk_size_gb: 10
+    root_disk_type: pd-ssd
+    tags: [bosh-agent]
+
+
+- name: standard
+  cloud_properties:
+    machine_type: n1-standard-2
+    root_disk_size_gb: 10
+    root_disk_type: pd-ssd
+    tags: [bosh-agent]
+
+- name: high
+  cloud_properties:
+    machine_type: n1-standard-4
+    root_disk_size_gb: 500
+    root_disk_type: pd-standard
+    tags: [bosh-agent]
+
+- name: worker
+  cloud_properties:
+    machine_type: n1-highcpu-4
+    root_disk_size_gb: 70
+    root_disk_type: pd-ssd
+    tags: [bosh-agent]
+
+networks:
+  - name: default
+    type: manual
+    subnets:
+    - az: z1
+      range: 10.0.0.0/24
+      gateway: 10.0.0.1
+      cloud_properties:
+        network_name: default
+        subnetwork_name: cfnet
+        ephemeral_external_ip: true
+        tags:
+          - concourse-public
+          - concourse-internal
+    - az: z2
+      range: 10.0.1.0/24
+      gateway: 10.0.1.1
+      cloud_properties:
+        network_name: default
+        subnetwork_name: cfnet1
+        ephemeral_external_ip: true
+        tags:
+          - concourse-public
+          - concourse-internal
+    - az: z3
+      range: 10.0.2.0/24
+      gateway: 10.0.2.1
+      cloud_properties:
+        network_name: default
+        subnetwork_name: cfnet2
+        ephemeral_external_ip: true
+        tags:
+          - concourse-public
+          - concourse-internal
+    - az: z4
+      range: 10.0.3.0/24
+      gateway: 10.0.3.1
+      cloud_properties:
+        network_name: default
+        subnetwork_name: cfnet3
+        ephemeral_external_ip: true
+        tags:
+          - concourse-public
+          - concourse-internal
+  - name: vip
+    type: vip
+
+disk_types:
+- cloud_properties:
+    encrypted: true
+    type: pd-standard
+  disk_size: 5120
+  name: 5GB
+- cloud_properties:
+    encrypted: true
+    type: pd-ssd
+  disk_size: 10240
+  name: 10GB
+- cloud_properties:
+    encrypted: true
+    type: pd-ssd
+  disk_size: 10240
+  name: common
+- cloud_properties:
+    encrypted: true
+    type: pd-ssd
+  disk_size: 10240
+  name: database
+- cloud_properties:
+    encrypted: true
+    type: pd-standard
+  disk_size: 51200
+  name: 50GB
+- cloud_properties:
+    encrypted: true
+    type: pd-standard
+  disk_size: 102400
+  name: 100GB
+- cloud_properties:
+    encrypted: true
+    type: pd-standard
+  disk_size: 512000
+  name: 500GB
+- cloud_properties:
+    encrypted: true
+    type: pd-standard
+  disk_size: 1048576
+  name: 1TB
+
+  
+compilation:
+  workers: 1
+  network: default
+  reuse_compilation_vms: true
+  az: z1
+  vm_type: worker
+
+vm_extensions:
+- cloud_properties:
+    backend_service: bosh-router-lb
+    tags:
+    - bosh-router-lb
+    - bosh-cf-ws
+    target_pool: bosh-cf-ws
+  name: cf-router-network-properties
+- cloud_properties:
+    tags:
+    - bosh-cf-ssh-proxy
+    target_pool: bosh-cf-ssh-proxy
+  name: diego-ssh-proxy-network-properties
+- cloud_properties:
+    tags:
+    - bosh-cf-tcp-router
+    target_pool: bosh-cf-tcp-router
+  name: cf-tcp-router-network-properties
+- cloud_properties:
+    tags:
+    - bosh-credhub
+    target_pool: bosh-credhub
+  name: credhub-network-properties
