@@ -1,0 +1,56 @@
+---
+# Default cf-deployment deploys a (mostly) HA configuration.
+# Use this override to only deploy single instance of each job,
+# in a single Availability Zone.
+- type: replace
+  path: /instance_groups/name=mysql/instances
+  value: 1
+- type: replace
+  path: /instance_groups/name=proxy/instances
+  value: 1
+
+- type: remove
+  path: /instance_groups/name=arbitrator
+
+- type: replace
+  path: /instance_groups/name=smoke-tests-vm/azs
+  value: [ z5 ]
+- type: replace
+  path: /instance_groups/name=mysql/azs
+  value: [ z5 ]
+- type: replace
+  path: /instance_groups/name=proxy/azs
+  value: [ z5 ]
+- type: replace
+  path: /instance_groups/name=bootstrap-vm/azs
+  value: [ z5 ]
+- type: replace
+  path: /instance_groups/name=rejoin-unsafe-vm/azs
+  value: [ z5 ]
+- type: replace
+  path: /instance_groups/name=verify-cluster-schemas-vm/azs
+  value: [ z5 ]
+
+- type: replace
+  path: /instance_groups/name=smoke-tests-vm/vm_type
+  value: common
+- type: replace
+  path: /instance_groups/name=mysql/vm_type
+  value: common
+- type: replace
+  path: /instance_groups/name=proxy/vm_type
+  value: common
+- type: replace
+  path: /instance_groups/name=bootstrap-vm/vm_type
+  value: common
+- type: replace
+  path: /instance_groups/name=rejoin-unsafe-vm/vm_type
+  value: common
+- type: replace
+  path: /instance_groups/name=verify-cluster-schemas-vm/vm_type
+  value: standard
+
+- type: replace
+  path: /stemcells/alias=default/version
+  value: latest
+

@@ -11,6 +11,10 @@ azs:
 - name: z4
   cloud_properties:
     zone: australia-southeast1-a
+- name: z5
+  cloud_properties:
+    zone: europe-west1-b
+
 vm_types:
 - name: common
   cloud_properties:
@@ -85,6 +89,17 @@ networks:
         tags:
           - concourse-public
           - concourse-internal
+    - az: z5
+      range: 10.0.4.0/24
+      gateway: 10.0.4.1
+      cloud_properties:
+        network_name: default
+        subnetwork_name: cfnet4
+        ephemeral_external_ip: true
+        tags:
+          - concourse-public
+          - concourse-internal
+
   - name: vip
     type: vip
 

@@ -92,7 +92,7 @@
   value: [ z3 ]
 - type: replace
   path: /instance_groups/name=log-api/azs
-  value: [ z4 ]
+  value: [ z2 ]
 
 
 - type: replace
