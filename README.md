@@ -15,23 +15,70 @@ gcloud auth login
 
 4. Create IAM service account
 ```
-gcloud iam service-accounts create bbl-user --display-name "BBL"
+gcloud iam service-accounts create cf-user --display-name "CF"
 ```
 5. Create service keys
 Set your PROJECT_ID
 ```
-gcloud iam service-accounts keys create --iam-account='bbl-user@PROJECT_ID.iam.gserviceaccount.com' \
-bbl-user.key.json
+gcloud iam service-accounts keys create --iam-account='cf-user@PROJECT_ID.iam.gserviceaccount.com' \
+cf-user.key.json
 ```
 
 6. Add editor role
 Set your PROJECT_ID
 ```
 gcloud projects add-iam-policy-binding PROJECT_ID \
---member='serviceAccount:bbl-user@PROJECT_ID.iam.gserviceaccount.com' \
+--member='serviceAccount:cf-user@PROJECT_ID.iam.gserviceaccount.com' \
 --role='roles/editor'
+
+gcloud projects add-iam-policy-binding PROJECT_ID \
+--member='serviceAccount:cf-user@PROJECT_ID.iam.gserviceaccount.com' \
+--role='roles/datastore.owner'
+
+gcloud projects add-iam-policy-binding PROJECT_ID \
+--member='serviceAccount:cf-user@PROJECT_ID.iam.gserviceaccount.com' \
+--role='roles/cloudsql.admin'
 ```
-7. Add networks
+
+7. Turn on SQL Cloud API
+https://console.developers.google.com/apis/api/sqladmin.googleapis.com/overview?project=590574243243
+
+
+8. Download Terraform v0.9.1 or later. Unzip the file and move it to somewhere in your PATH:
+
+```
+tar xvf ~/Downloads/terraform*
+sudo mv ~/Downloads/terraform /usr/local/bin/terraform
+```
+
+9. Export GCP credetials
+```
+export TF_CREDS=~/cf-user.key.json
+export GOOGLE_CREDENTIALS=$(cat ${TF_CREDS})
+```
+
+10. Create dir terraform
+```
+mkdir terraform
+cd terraform
+```
+
+11*. Skip if certificate already exist. Create ssl domain wildcard certificate for loadbalancer. Domain example *.example.com
+Put it to terraform directory
+```
+openssl genrsa -out example.key 2048
+openssl req -new -key example.key -out example.csr
+openssl x509 -req -days 365 -in example.csr -signkey example.key -out example.crt
+```
+
+
+
+12. Init terraform
+```
+terraform init
+```
+
+10. Prepare networks
 
 Add following subnets to default network by using https://console.cloud.google.com:
 cfnet	us-central1		10.0.0.0/24	10.0.0.1	On
