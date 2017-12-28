@@ -5,8 +5,9 @@
 
 1. Singup on Google GCP
 
-2. Install Cloud SDK
+2. Install Cloud SDK and git on your PC.
 https://cloud.google.com/sdk/downloads
+
 
 3. Login to GCP
 ```
@@ -51,10 +52,27 @@ tar xvf ~/Downloads/terraform*
 sudo mv ~/Downloads/terraform /usr/local/bin/terraform
 ```
 
-9. Export GCP credetials
+9. Export GCP credetials and PROJECT_ID
 ```
 export TF_CREDS=~/cf-user.key.json
 export GOOGLE_CREDENTIALS=$(cat ${TF_CREDS})
+export GOOGLE_PROJECT=$(gcloud config get-value project)
+```
+
+10. Clone cf-gcp-free
+```
+git clone https://github.com/vyrodovalexey/cf-gcp-free.git
+```
+
+11. Preparing network environment.
+
+11.2. Clone google terraform lb modules
+```
+git clone https://github.com/GoogleCloudPlatform/terraform-google-examples
+```
+10.2. Clone custom terraform template
+```
+
 ```
 
 10. Create dir terraform

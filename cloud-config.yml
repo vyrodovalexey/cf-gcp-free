@@ -155,9 +155,9 @@ compilation:
 
 vm_extensions:
 - cloud_properties:
-    backend_service: bosh-router-lb
+    backend_service: bosh-cf-router-lb
     tags:
-    - bosh-router-lb
+    - bosh-cf-router-lb
     - bosh-cf-ws
     target_pool: bosh-cf-ws
   name: cf-router-network-properties
