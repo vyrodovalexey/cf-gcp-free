@@ -100,7 +100,7 @@ resource "google_compute_firewall" "allow-internal-cfnets" {
 
 
 resource "google_compute_firewall" "bosh-agents-and-director" {
-  name    = "bosh-agent-to-director"
+  name    = "bosh-agent-and-director"
   network = "default"
 
   allow {
@@ -214,17 +214,24 @@ resource "google_storage_bucket" "resource-cf" {
 
 
 resource "google_sql_database_instance" "master" {
-  name = "master"
+  name = "cfdatabase"
   region = "asia-south1"
   settings {
     tier = "db-n1-standard-1"
-  }
+    ip_configuration {
+    authorized_networks {
+    name = "all"
+    value = "0.0.0.0/0"
+    }
+    }
+    
+ }
 }
 
 resource "google_sql_user" "users" {
   name     = "${var.user_sql}"
   instance = "${google_sql_database_instance.master.name}"
-  host     = "0.0.0.0/0"
+  host     = "%"
   password = "${var.user_sql_password}"
 }
 
@@ -360,3 +367,17 @@ module "gce-lb-http" {
  ]
 }
 
+resource "google_compute_target_pool" "bosh-cf-tcp-router" {
+  name = "bosh-cf-tcp-router"
+  region = "australia-southeast1"
+}
+
+resource "google_compute_target_pool" "bosh-cf-ws" {
+  name = "bosh-cf-ws"
+  region = "australia-southeast1"
+}
+
+resource "google_compute_target_pool" "bosh-cf-ssh-proxy" {
+  name = "bosh-cf-ssh-proxy"
+  region = "australia-southeast1"
+}
