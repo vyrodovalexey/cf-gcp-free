@@ -6,8 +6,9 @@
 
 2. Installing Cloud SDK and git on your PC and install requirements
 https://cloud.google.com/sdk/downloads
+```
 sudo apt-get install mc htop net-tools build-essential ruby wget git apt-transport-https -y
-
+```
 3. Enable GCP API services and create Storage access key
 
 4. Login to GCP
