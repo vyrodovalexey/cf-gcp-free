@@ -5,6 +5,7 @@
 1. Singup on Google GCP
 
 2. Installing Cloud SDK and git on your PC and install requirements
+
 https://cloud.google.com/sdk/downloads
 ```
 sudo apt-get install mc htop net-tools build-essential ruby wget git apt-transport-https -y
@@ -21,6 +22,7 @@ gcloud auth login
 gcloud iam service-accounts create cf-user --display-name "CF"
 ```
 6. Create service keys
+
 Set your PROJECT_ID
 ```
 gcloud iam service-accounts keys create --iam-account='cf-user@PROJECT_ID.iam.gserviceaccount.com' \
@@ -28,6 +30,7 @@ cf-user.key.json
 ```
 
 7. Adding editor role
+
 Set your PROJECT_ID
 ```
 gcloud projects add-iam-policy-binding PROJECT_ID \
@@ -44,6 +47,7 @@ gcloud projects add-iam-policy-binding PROJECT_ID \
 ```
 
 8. Turning on SQL Cloud API
+
 https://console.developers.google.com/apis/api/sqladmin.googleapis.com/overview?project=590574243243
 
 9. Downloading Terraform v0.9.1 or later. Unzip the file and move it to somewhere in your PATH:
@@ -66,6 +70,7 @@ git clone https://github.com/vyrodovalexey/cf-gcp-free.git
 ```
 
 12. Preparing network environment.
+
 Change values project, domains, domain, user_sql, user_sql_password
 ```
 cd cf-gcp-free
@@ -83,6 +88,7 @@ terraform plan -var project=PROJECT_ID -var domains='["*.app.example.com","*.ws.
 cd ..
 ```
 13. Setup DNS
+
 Check IP of LB (LoadBalancer) in GCP and setup your DNS zone.
 LB_IP *.app.example.com
 LB_IP *.ws.example.com
@@ -93,6 +99,7 @@ LB_IP *.example.com
 
 
 14. Deploying BOSH
+
 14.1. Installing utility
 ```
 wget https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.45-linux-amd64
@@ -105,6 +112,7 @@ sudo mv bosh-cli-2.0.45-linux-amd64 /usr/local/bin/bosh
 git clone https://github.com/cloudfoundry/bosh-deployment
 ```
 14.3. Deploying Director
+
 Change PROJECT_ID
 ```
 bosh create-env bosh-deployment/bosh.yml \
@@ -154,6 +162,7 @@ Password ():
 ```
 
 14.7. Uploading latest stemcell
+
 http://bosh.cloudfoundry.org/stemcells/
 Example:
 ```
@@ -200,8 +209,6 @@ bosh -e gcp -d cf deploy cf-deployment/cf-deployment.yml --vars-file cf-gcp-free
 -o cf-deployment/operations/use-gcs-blobstore.yml \
 -v system_domain=example.com
 ```
-
-
 
 15.4. Installing cf utility
 ```
