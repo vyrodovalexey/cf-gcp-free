@@ -21,7 +21,7 @@ gcloud auth login
 ```
 gcloud iam service-accounts create cf-user --display-name "CF"
 ```
-6. Create service keys
+6. Creating service keys
 
 Set your PROJECT_ID
 ```
@@ -89,7 +89,7 @@ cd ..
 ```
 13. Setup DNS
 
-Check IP of LB (LoadBalancer) in GCP and setup your DNS zone.
+Check IP of LB (LoadBalancer) in GCP console and setup your DNS zone.
 LB_IP *.app.example.com
 LB_IP *.ws.example.com
 LB_IP *.example.com
