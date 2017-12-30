@@ -276,7 +276,7 @@ FAILED
 Error restarting application: Server error, status code: 502, error code: 0, message:
 ```
 
-That's ok. Just wait few minutes and try to open in browser. (Wait some)
+That's ok. Just wait a littile and try to open in browser.
 
 http://phpexample.example.com
 
@@ -297,7 +297,7 @@ FAILED
 Error restarting application: Server error, status code: 502, error code: 0, message:
 ```
 
-That's ok. Just wait few minutes and try to open in browser. (Wait some)
+That's ok. Just wait a little and try to open in browser.
 
 http://my-app.example.com
 
