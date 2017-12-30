@@ -1,4 +1,4 @@
-### Bypassing GCP free trial quota to install CloudFoundry.
+### Fit CloudFoundry to install on GCP free trial.
 
 ### Usage
 
