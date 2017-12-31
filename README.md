@@ -77,11 +77,11 @@ cd cf-gcp-free
 terraform init
 ```
 ```
-terraform plan -var project=PROJECT_ID -var domains='["*.app.example.com","*.ws.example.com.info","*.example.com.info"]' \
+terraform plan -var project=PROJECT_ID -var domains='["*.sys.example.com","*.ws.example.com.info","*.example.com.info"]' \
 -var domain=example.com -var user_sql=USER -var user_sql_password=PASSWORD
 ```
 ```
-terraform plan -var project=PROJECT_ID -var domains='["*.app.example.com","*.ws.example.com.info","*.example.com.info"]' \
+terraform plan -var project=PROJECT_ID -var domains='["*sys.example.com","*.ws.example.com.info","*.example.com.info"]' \
 -var domain=example.com -var user_sql=USER -var user_sql_password=PASSWORD
 ```
 ```
@@ -90,7 +90,7 @@ cd ..
 13. Setup DNS
 
 Check IP of LB (LoadBalancer) in GCP console and setup your DNS zone.
-LB_IP *.app.example.com
+LB_IP *.sys.example.com
 LB_IP *.ws.example.com
 LB_IP *.example.com
 
