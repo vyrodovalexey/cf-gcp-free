@@ -1,5 +1,5 @@
-blobstore_access_key_id: GOOG6CV2LNQ33KZ7UBKN
-blobstore_secret_access_key: lXsV6asdasdaYphyGGM5t6HN46MkNso9O4+sSwiMI1
+blobstore_access_key_id: GOOG6CV2LNQ33KZ7UBDW
+blobstore_secret_access_key: lXsV6asdasdaYpepGGM5t6HN46MkNso9O4+sSwiMI1
 app_package_directory_key: app_package_cf
 buildpack_directory_key: buildpack_cf
 droplet_directory_key: droplet_cf
