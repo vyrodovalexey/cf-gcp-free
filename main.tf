@@ -277,6 +277,7 @@ resource "google_sql_database" "servicebroker" {
 }
 
 
+
 resource "google_compute_instance_group" "bosh-cf-router-lb" {
   name        = "bosh-cf-router-lb"
   description = "CF router instance group"
@@ -291,7 +292,7 @@ resource "google_compute_instance_group" "bosh-cf-router-lb" {
   }
 
 
-  zone = "australia-southeast1-a"
+ zone = "australia-southeast1-a"
 }
 
 
@@ -326,28 +327,10 @@ resource "tls_self_signed_cert" "domaincert" {
   }
 }
 
-#module "mig1" {
-#  source            = "github.com/GoogleCloudPlatform/terraform-google-managed-instance-group"
-#  region            = "australia-southeast1"
-#  zone              = "australia-southeast1-a"
-#  name              = "bosh-cf-router-lb"
-#  network           = "default"
-#  service_port      = 443
-#  service_port_name = "https"
-#  target_pools      = ["${module.gce-lb-http.target_pool}"]
-#  target_tags       = ["bosh-cf-router-lb","bosh-cf-ws"]
-#  startup_script    = "${data.template_file.group1-startup-script.rendered}"
-#}
-
-
-
 module "gce-lb-http" {
   source         = "github.com/GoogleCloudPlatform/terraform-google-lb-http"
   name           = "bosh-cf-router-lb"
   target_tags       = ["bosh-cf-router-lb","bosh-cf-ws"]
-#  target_tags    = ["${module.mig1.target_tags}"]
-#  url_map        = "${google_compute_url_map.my-url-map.self_link}"
-#  create_url_map = false
   ssl            = true
   private_key    = "${tls_private_key.domaincert.private_key_pem}"
   certificate    = "${tls_self_signed_cert.domaincert.cert_pem}"
@@ -355,7 +338,6 @@ module "gce-lb-http" {
   backends = {
     "0" = [
       {
-#        group = "${module.mig1.instance_group}"
         group = "${google_compute_instance_group.bosh-cf-router-lb.self_link}"
       },
     ]
@@ -367,6 +349,17 @@ module "gce-lb-http" {
  ]
 }
 
+
+resource "google_compute_target_pool" "bosh-cf-tcp-router" {
+  name = "bosh-cf-tcp-router"
+  region = "australia-southeast1"
+  session_affinity = "NONE"
+
+  health_checks = [
+    "${google_compute_http_health_check.bosh-cf-tcp-router.name}",
+  ]
+}
+
 resource "google_compute_target_pool" "bosh-cf-tcp-router" {
   name = "bosh-cf-tcp-router"
   region = "australia-southeast1"
@@ -375,9 +368,61 @@ resource "google_compute_target_pool" "bosh-cf-tcp-router" {
 resource "google_compute_target_pool" "bosh-cf-ws" {
   name = "bosh-cf-ws"
   region = "australia-southeast1"
+  session_affinity = "NONE"
+
+  health_checks = [
+    "${google_compute_http_health_check.bosh-cf-public.name}",
+  ]
+
 }
 
 resource "google_compute_target_pool" "bosh-cf-ssh-proxy" {
   name = "bosh-cf-ssh-proxy"
   region = "australia-southeast1"
+}
+
+resource "google_compute_http_health_check" "bosh-cf-tcp-router" {
+  name         = "bosh-cf-tcp-router"
+  port         = 80
+  request_path = "/health"
+}
+
+resource "google_compute_http_health_check" "bosh-cf-public" {
+  name         = "bosh-cf-public"
+  port         = 8080
+  request_path = "/health"
+}
+
+
+resource "google_compute_forwarding_rule" "bosh-cf-tcp-router" {
+  name        = "bosh-cf-tcp-router"
+  target      = "${google_compute_target_pool.bosh-cf-tcp-router.self_link}"
+  port_range  = "1024-32768"
+  ip_protocol = "TCP"
+  region = "australia-southeast1"
+}
+
+resource "google_compute_forwarding_rule" "bosh-cf-ws-https" {
+  name        = "bosh-cf-ws-https"
+  target      = "${google_compute_target_pool.bosh-cf-ws.self_link}"
+  port_range  = "443"
+  ip_protocol = "TCP"
+  region = "australia-southeast1"
+}
+
+resource "google_compute_forwarding_rule" "bosh-cf-ws-http" {
+  name        = "bosh-cf-ws-http"
+  target      = "${google_compute_target_pool.bosh-cf-ws.self_link}"
+  port_range  = "80"
+  ip_protocol = "TCP"
+  region = "australia-southeast1"
+}
+
+resource "google_compute_forwarding_rule" "bosh-cf-ssh-proxy" {
+  name        = "bosh-cf-ssh-proxy"
+  target      = "${google_compute_target_pool.bosh-cf-ssh-proxy.self_link}"
+  port_range  = "2222"
+  ip_protocol = "TCP"
+  region = "australia-southeast1"
+
 }

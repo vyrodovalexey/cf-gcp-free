@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+### Bypassing GCP free trial quota to install CloudFoundry.
+=======
 ### Fit CloudFoundry to install on GCP free trial.
+>>>>>>> 10d0c0d14c9945547bd855d873e49042ae1c7e50
 
 ### Usage
 
@@ -21,7 +25,11 @@ gcloud auth login
 ```
 gcloud iam service-accounts create cf-user --display-name "CF"
 ```
+<<<<<<< HEAD
+6. Create service keys
+=======
 6. Creating service keys
+>>>>>>> 10d0c0d14c9945547bd855d873e49042ae1c7e50
 
 Set your PROJECT_ID
 ```
@@ -81,21 +89,25 @@ terraform plan -var project=PROJECT_ID -var domains='["*.sys.example.com","*.ws.
 -var domain=example.com -var user_sql=USER -var user_sql_password=PASSWORD
 ```
 ```
-terraform plan -var project=PROJECT_ID -var domains='["*sys.example.com","*.ws.example.com.info","*.example.com.info"]' \
--var domain=example.com -var user_sql=USER -var user_sql_password=PASSWORD
-```
-```
 cd ..
 ```
 13. Setup DNS
 
-Check IP of LB (LoadBalancer) in GCP console and setup your DNS zone.
+Check IP of LB (LoadBalancer) in GCP and setup your DNS zone.
+https://console.cloud.google.com/net-services/loadbalancing/loadBalancers/list
+
+bosh-cf-router-lb-url-map
 LB_IP *.sys.example.com
-LB_IP *.ws.example.com
 LB_IP *.example.com
 
+bosh-cf-ws
+LB_IP *.ws.example.com
 
+bosh-cf-tcp-router
+LB_IP *.tcp.example.com
 
+bosh-cf-ssh-proxy
+LB_IB *.ssh.example.com
 
 
 14. Deploying BOSH
@@ -188,6 +200,7 @@ git clone https://github.com/cloudfoundry/cf-deployment.git
 ```
 
 15.2. Preparing vars files.
+<<<<<<< HEAD
 
 Set actual values into files below (cf-gcp-free direcory)
 vars-use-external-dbs.yml
@@ -198,8 +211,23 @@ Take IP for DB from GCP console.
 
 Access key was created in section 3.
 Take bucket names from GCP console.
+=======
 
+Set actual values into files below (cf-gcp-free direcory)
+vars-use-external-dbs.yml
+vars-use-gcs-blobstore.yml
 
+User and password for DB take from section 12.
+Take IP for DB from GCP console.
+>>>>>>> 10d0c0d14c9945547bd855d873e49042ae1c7e50
+
+Access key was created in section 3.
+Take bucket names from GCP console.
+
+<<<<<<< HEAD
+=======
+
+>>>>>>> 10d0c0d14c9945547bd855d873e49042ae1c7e50
 15.3. Deploying
 ```
 bosh -e gcp -d cf deploy cf-deployment/cf-deployment.yml --vars-file cf-gcp-free/vars-use-external-dbs.yml \
@@ -227,13 +255,71 @@ sudo apt-get install cf-cli
 Getting CF admin password
 ```
 cat env-repository/deployment-vars.yml | grep cf_admin_password
+<<<<<<< HEAD
+=======
 ```
 
+login
+>>>>>>> 10d0c0d14c9945547bd855d873e49042ae1c7e50
+```
+cf login -a api.example.com --skip-ssl-validation
+API endpoint: api.pcf.myitnotes.info
+
+<<<<<<< HEAD
 login
 ```
 cf login -a api.example.com --skip-ssl-validation
 API endpoint: api.pcf.myitnotes.info
 
+Email> admin
+
+Password>
+Authenticating...
+OK
+
+Targeted org system
+
+
+
+API endpoint:   https://api.pcf.myitnotes.info (API version: 2.100.0)
+User:           admin
+Org:            system
+Space:          No space targeted, use 'cf target -s SPACE'
+```
+
+15.6. Creating org and space
+```
+cf create-org TEST
+cf target -o "TEST"
+cf create-space DEV
+cf target -o "TEST" -s "DEV"
+```
+
+15.7. Cloning test repo
+```
+git clone https://github.com/krujos/cf-hello-world-sample-apps.git
+```
+
+15.8. Starting test app
+```
+cd cf-hello-world-sample-apps/php
+cf push phpexample
+```
+
+If you will see following:
+```
+Starting app phpexample in org TEST / space DEV as admin...
+FAILED
+Error restarting application: Server error, status code: 502, error code: 0, message:
+```
+
+That's ok. Just wait few minutes and try to open in browser. (Wait some)
+
+http://phpexample.example.com
+
+15.9. Starting docker
+
+=======
 Email> admin
 
 Password>
@@ -282,6 +368,7 @@ http://phpexample.example.com
 
 15.9. Starting docker
 
+>>>>>>> 10d0c0d14c9945547bd855d873e49042ae1c7e50
 To enable Docker support, run:
 ```
 cf enable-feature-flag diego_docker
@@ -297,7 +384,11 @@ FAILED
 Error restarting application: Server error, status code: 502, error code: 0, message:
 ```
 
+<<<<<<< HEAD
+That's ok. Just wait few minutes and try to open in browser. (Wait some)
+=======
 That's ok. Just wait a little and try to open in browser.
+>>>>>>> 10d0c0d14c9945547bd855d873e49042ae1c7e50
 
 http://my-app.example.com
 
