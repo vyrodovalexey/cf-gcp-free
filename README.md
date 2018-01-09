@@ -89,16 +89,21 @@ Check IP of LB (LoadBalancer) in GCP and setup your DNS zone.
 https://console.cloud.google.com/net-services/loadbalancing/loadBalancers/list
 
 bosh-cf-router-lb-url-map
+
 LB_IP *.sys.example.com
+
 LB_IP *.example.com
 
 bosh-cf-ws
+
 LB_IP *.ws.example.com
 
 bosh-cf-tcp-router
+
 LB_IP *.tcp.example.com
 
 bosh-cf-ssh-proxy
+
 LB_IB *.ssh.example.com
 
 
