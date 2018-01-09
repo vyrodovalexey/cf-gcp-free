@@ -25,14 +25,6 @@ provider "google" {
   region        = "us-central1"
 }
 
-#data "template_file" "group1-startup-script" {
-#  template = "${file("${format("%s/../scripts/gceme.sh.tpl", path.module)}")}"
-#
-#  vars {
-#    PROXY_PATH = ""
-#  }
-#}
-
 resource "google_compute_subnetwork" "cfnet" {
   name          = "cfnet"
   ip_cidr_range = "10.0.0.0/24"
@@ -358,11 +350,6 @@ resource "google_compute_target_pool" "bosh-cf-tcp-router" {
   health_checks = [
     "${google_compute_http_health_check.bosh-cf-tcp-router.name}",
   ]
-}
-
-resource "google_compute_target_pool" "bosh-cf-tcp-router" {
-  name = "bosh-cf-tcp-router"
-  region = "australia-southeast1"
 }
 
 resource "google_compute_target_pool" "bosh-cf-ws" {
