@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-### Bypassing GCP free trial quota to install CloudFoundry.
-=======
 ### Fit CloudFoundry to install on GCP free trial.
->>>>>>> 10d0c0d14c9945547bd855d873e49042ae1c7e50
 
 ### Usage
 
@@ -25,11 +21,7 @@ gcloud auth login
 ```
 gcloud iam service-accounts create cf-user --display-name "CF"
 ```
-<<<<<<< HEAD
-6. Create service keys
-=======
 6. Creating service keys
->>>>>>> 10d0c0d14c9945547bd855d873e49042ae1c7e50
 
 Set your PROJECT_ID
 ```
@@ -200,7 +192,6 @@ git clone https://github.com/cloudfoundry/cf-deployment.git
 ```
 
 15.2. Preparing vars files.
-<<<<<<< HEAD
 
 Set actual values into files below (cf-gcp-free direcory)
 vars-use-external-dbs.yml
@@ -211,7 +202,6 @@ Take IP for DB from GCP console.
 
 Access key was created in section 3.
 Take bucket names from GCP console.
-=======
 
 Set actual values into files below (cf-gcp-free direcory)
 vars-use-external-dbs.yml
@@ -219,15 +209,10 @@ vars-use-gcs-blobstore.yml
 
 User and password for DB take from section 12.
 Take IP for DB from GCP console.
->>>>>>> 10d0c0d14c9945547bd855d873e49042ae1c7e50
 
 Access key was created in section 3.
 Take bucket names from GCP console.
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 10d0c0d14c9945547bd855d873e49042ae1c7e50
 15.3. Deploying
 ```
 bosh -e gcp -d cf deploy cf-deployment/cf-deployment.yml --vars-file cf-gcp-free/vars-use-external-dbs.yml \
@@ -255,21 +240,13 @@ sudo apt-get install cf-cli
 Getting CF admin password
 ```
 cat env-repository/deployment-vars.yml | grep cf_admin_password
-<<<<<<< HEAD
-=======
 ```
 
-login
->>>>>>> 10d0c0d14c9945547bd855d873e49042ae1c7e50
-```
-cf login -a api.example.com --skip-ssl-validation
-API endpoint: api.pcf.myitnotes.info
 
-<<<<<<< HEAD
 login
 ```
 cf login -a api.example.com --skip-ssl-validation
-API endpoint: api.pcf.myitnotes.info
+API endpoint: api.example.com
 
 Email> admin
 
@@ -384,15 +361,10 @@ FAILED
 Error restarting application: Server error, status code: 502, error code: 0, message:
 ```
 
-<<<<<<< HEAD
-That's ok. Just wait few minutes and try to open in browser. (Wait some)
-=======
 That's ok. Just wait a little and try to open in browser.
->>>>>>> 10d0c0d14c9945547bd855d873e49042ae1c7e50
 
 http://my-app.example.com
 
-##To be continued...
 
 ## Enjoy!
 
